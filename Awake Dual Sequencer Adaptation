@@ -53,7 +53,7 @@ with_fx :ping_pong, feedback: 0.3, phase:0.25, mix: 0.5 do
       if seq1 != :r
         seq2 = notesShort.look
         
-        play mySca[seq1+seq2], cutoff:72, env_curve: 6, release: 0.8, pulse_width:rrand(0.15,0.85), amp:1.2
+        play mySca[seq1+seq2], cutoff:100, env_curve: 6, release: 0.8, pulse_width:rrand(0.15,0.85), amp:1.2
       end
       sleep 0.25
     end
