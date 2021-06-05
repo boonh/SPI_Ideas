@@ -1,0 +1,28 @@
+#An example that demonstrates obtaining the inverse of the spread function
+#percLoop plays the familiar 3,3,2 clave pattern
+#synthLoopInverse plays the spaces between the 3,3,2 - in otherwords the opposite.
+#Both functions generate the same data (ring true, false, false, true, false, false, true, false)
+#However note the use of the on: opt and use of the ! operator.
+
+live_loop :percLoop do
+  ex = spread(3, 8)
+  sample :drum_cymbal_closed, on: ex.tick
+  sleep 0.25
+  
+end
+
+live_loop :synthLoopInverse do
+  synEx = spread(3, 8)
+  
+  with_synth_defaults attack_level: rrand(1, 2) do
+    play_chord (chord :C4, :minor), release: 0.25, amp: 0.8, on: !synEx.tick
+  end
+  
+  sleep 0.25
+end
+
+#Whilst this is a simple example, the figures can be rotated, providing more levels of complexity, such as
+#(ring true, false, false, true, false, false, true, false).rotate(3)
+#You can also obtain the reverse by appending .reverse to the ring i.e.
+#(ring true, false, false, true, false, false, true, false).reverse
+#Or use the other functions such as mirror, reflect, either singly or in combination
