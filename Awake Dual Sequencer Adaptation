@@ -39,7 +39,7 @@ mySca = scale(:C3, :dorian, num_octaves:2)
 #notesShort = (ring 5, 0, 6,0,4,0).stretch(3).mirror
 
 notes = (ring 1,0,2,4,5,6,7,6)
-notesShort = (ring 5,7,0,0,0,0,0)
+notesShort = (ring 4,6,0,0,0,0,0)
 
 #Relies on the fact that rings wrap and therefore no requirement to test for out of bounds
 #Still not sure this works like my Norns
