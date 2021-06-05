@@ -1,2 +1,2 @@
 # SPI_Ideas
-Some of codeexamples and adaptations for Sonic Pi
+Some of code examples and adaptations for Sonic Pi
