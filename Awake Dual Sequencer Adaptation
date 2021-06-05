@@ -1,0 +1,62 @@
+#A basic attempt to model
+#Monome Norns Awake Dual Sequencer
+#original values in AWAKE
+#One - {1,0,3,5,6,7,8,7,0,0,0,0,0,0,0,0}
+#Two -{5,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+#To Do
+#Does not have functions for changing scale
+#number of octaves
+#BPM
+#Variable step length
+#Though all can be coded in realtime
+
+use_bpm 91
+use_synth :pulse
+#Change num_octaves to 1 or 2
+#if you want to use a larger range then make sure that notesShort have values that extend into the 3rd or 4th octave.
+mySca = scale(:C3, :dorian, num_octaves:2)
+#Some nice pattern pairs. Uncomment to use and remember to comment out ones currently being used
+###########################################################################################
+#notes = (ring 0,1,2,4,5,6,7,6) - this pair works well if the scale is minor_pentatonic
+#notesShort = (ring 4,6,0,2, 1)
+###########################################################################################
+#notes = (ring 1,0,2,4,5,6,7,6) - this pattern pair works well if the scale is set to dorian, :C3 and 3 octaves
+#notesShort = (ring 4,6,0,2)
+###########################################################################################
+#notes = (ring 1,0,2,4,5,6,7,6) - this pattern pair works well if the scale is set to dorian, :C3 and 3 octaves
+#notesShort = (ring 4,6,0)
+###########################################################################################
+#notes = (ring 1,0,2,4,5,6,7,6) - as above. Works well with Dorian mode
+#notesShort = (ring 4, 0, 1)
+###########################################################################################
+#Try to use .reverse, .stretch, .mirror, .reflect and .scale
+#Especially if compounds?? i.e. .stretch(2).mirror.reverse
+###########################################################################################
+#notes = (ring 1,0,2,4,5,6,7,6).stretch(3).mirror.reflect.reverse - Works well with minor pentatonic, pitch at :C3 and num_octaves: 3
+#notesShort = (ring 5, 0, 6,0,4,0,0) - this 7 ring sequence is subdivided at intervals of 2,3,2. Also try with .reverse
+###########################################################################################
+#notes = (ring 1,0,2,4,5,6,7,6).mirror.scale(2).reflect
+#notesShort = (ring 5, 0, 6,0,4,0).stretch(3).mirror
+
+notes = (ring 1,0,2,4,5,6,7,6)
+notesShort = (ring 5,7,0,0,0,0,0)
+
+#Relies on the fact that rings wrap and therefore no requirement to test for out of bounds
+#Still not sure this works like my Norns
+#Advice??
+
+with_fx :ping_pong, feedback: 0.3, phase:0.25, mix: 0.5 do
+  with_fx :reverb, mix:0.6 do
+    live_loop :dualSeq do
+      
+      seq1 = notes.tick
+      if seq1 != :r
+        seq2 = notesShort.look
+        
+        play mySca[seq1+seq2], cutoff:72, env_curve: 6, release: 0.8, pulse_width:rrand(0.15,0.85), amp:1.2
+      end
+      sleep 0.25
+    end
+  end
+end
+
