@@ -8,16 +8,13 @@ live_loop :percLoop do
   ex = spread(3, 8)
   sample :drum_cymbal_closed, on: ex.tick
   sleep 0.25
-  
 end
 
 live_loop :synthLoopInverse do
   synEx = spread(3, 8)
-  
   with_synth_defaults attack_level: rrand(1, 2) do
     play_chord (chord :C4, :minor), release: 0.25, amp: 0.8, on: !synEx.tick
   end
-  
   sleep 0.25
 end
 
