@@ -1,0 +1,21 @@
+#A very rudimentary implementation of Krell Music
+#Hussein Boon
+#Based on Todd Barton's description and my experience implementing this using Modular Synths
+#"Krell Music" patch--a self-generating patch inspired by Bebe and Louis Barron's soundtrack to the 1956 film "Forbidden Planet."
+
+sleepVals = (ring 0.125, 0.25, 0.5, 0.75, 1.0, 1.125, 1.25, 1.5, 1.75, 2.0)
+nChoice = (scale :C2, :chromatic, num_octaves:5)
+
+with_fx :reverb, room: 0.7, mix:0.5, amp:1.0 do
+  with_fx :echo, phase:rrand(0.125, 0.25), decay:rrand(0.7, 2.5), mix:rrand(0,rrand(0.25,0.45)) do
+    live_loop :krell do
+      if one_in (2)
+        sleepyTime = sleepVals.choose
+      else
+        sleepyTime = 0.125
+      end
+      play nChoice.choose, attack: sleepyTime/2, release: sleepyTime/2, pan: rdist(-0.45), amp: rrand(0.1,1.0), amp_slide: 5
+      sleep sleepyTime
+    end
+  end
+end
