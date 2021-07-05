@@ -1,0 +1,37 @@
+#Bools Based Dual Sequencer
+#A rudimentary implementation
+#By Hussein Boon
+#Is essentially a dual sequencer with top and bottom rows
+
+use_bpm 162
+
+noteSelection = [(scale :C4, :minor, num_octaves:1),(scale :C4, :minor_pentatonic, num_octaves:1).reverse, (scale :C4, :phrygian, num_octaves:1), (chord :F3, :m7, num_octaves:1), (chord :Eb3, :maj9, num_octaves:1) ]
+mask = [bools(false), bools(false, true).reflect.mirror, bools(true,true, true, false, true, true),
+        bools(true, true), bools(false, true, true), bools(false, false, true),
+        bools(true, true, false, false, true), bools(true, true, true, true), bools(true, false, false), bools(false, true, true)]
+subRing = [(chord :C3, :madd2),(chord :C3, :madd2),(chord :Bb2, :madd2),(chord :C3, :madd2),(chord :Ab2, :add2), (chord :Ab2, :add2)]
+
+ctr = 0
+amt = mask.size-1
+
+live_loop :endless do
+  
+  maskChoice = mask[rrand_i(0,amt)]
+  
+  if maskChoice[ctr] == true
+    # play upper
+    play noteSelection.tick.choose, release:0.3
+    sleep 0.5
+  else
+    #play lower
+    play subRing.tick.choose, release:0.6
+    sleep 0.5
+  end
+  
+  ctr +=1
+  
+  if ctr > amt
+    ctr = 0
+  end
+end
+
