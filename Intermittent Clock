@@ -1,0 +1,23 @@
+#A rudimentary implementation of intermittent clock
+#By Hussein Boon
+#Using set and get to evaluate and set state
+
+use_bpm 110
+#Init values
+set :runState, false
+notes = (ring :C3, :Bb2, :G3, :G2, :Bb3)
+
+live_loop :stateChanger do
+  if one_in 2
+    set :runState, !get[:runState]
+  end
+  sleep (ring 1.0, 2.0, 3.0, 4.0, 8.0).choose
+end
+
+
+live_loop :test do
+  if get[:runState]
+    play notes.choose, release:0.2
+  end
+  sleep 0.25
+end
