@@ -1,0 +1,122 @@
+#Matrix Sequencer - Hussein Boon
+#An attempt to implement the Tip Top Audio Z8000 in SPi
+
+#Note: the live_loops are not meant to sound simultaneously!
+#Depending on your note choices for mar1 thru to mat4, there could be points where these could complement
+#Another adaptation is for each loop tos end out midi control info as modulation sources
+#Explore using ring chain commands to adapt the sequencers, as can be seen with mat1
+#uncomment/comment stop to hear any combination of seqs
+
+mat1 = (scale :C3, :minor_pentatonic, num_octaves: 1).take(4)
+mat2 = (chord :Eb3, :major7)
+mat3 = (chord :Bb2, '5')
+mat4 = (ring :C4, :Bb3, :G3, :Ab3)
+
+matrix = ring(mat1, mat2, mat3, mat4)
+
+#common sleep value for all sequencers
+sleepval = 0.25
+#common release value for all synths
+releaseval = 0.2
+
+#overall timekeeper to sync with
+live_loop :metro do
+  sleep 1
+end
+
+#Play thru each row
+live_loop :allSeq, sync: :metro do
+  #stop
+  i = 0
+  matrix.size.times do
+    currMat = matrix[i]
+    n = 0
+    currMat.size.times do
+      play currMat.tick, release: releaseval
+      sleep sleepval
+      n += 1
+    end
+    i +=1
+  end
+end
+
+live_loop :seq1H, sync: :metro do
+  stop
+  play matrix[0].tick, release: releaseval
+  sleep sleepval
+end
+
+live_loop :seq2H, sync: :metro do
+  stop
+  play matrix[1].tick, release: releaseval
+  sleep sleepval
+end
+
+live_loop :seq3H, sync: :metro do
+  stop
+  play matrix[2].tick, release: releaseval
+  sleep sleepval
+end
+
+live_loop :seq4H, sync: :metro do
+  stop
+  play matrix[3].tick, release: releaseval
+  sleep sleepval
+end
+
+live_loop :seq1D, sync: :metro do
+  stop
+  col = 0
+  n = 0
+  matrix.size.times do
+    play matrix[n][col], release: releaseval
+    sleep sleepval
+    n += 1
+    if n > matrix.size
+      n = 0
+    end
+  end
+end
+
+
+live_loop :seq2D, sync: :metro do
+  stop
+  col = 1
+  n = 0
+  matrix.size.times do
+    play matrix[n][col], release: releaseval
+    sleep sleepval
+    n += 1
+    if n > matrix.size
+      n = 0
+    end
+  end
+end
+
+live_loop :seq3D, sync: :metro do
+  stop
+  col = 2
+  n = 0
+  matrix.size.times do
+    play matrix[n][col], release: releaseval
+    sleep sleepval
+    n += 1
+    if n > matrix.size
+      n = 0
+    end
+  end
+end
+
+live_loop :seq4D, sync: :metro do
+  stop
+  col = 3
+  n = 0
+  matrix.size.times do
+    play matrix[n][col], release: releaseval
+    sleep sleepval
+    n += 1
+    if n > matrix.size
+      n = 0
+    end
+  end
+end
